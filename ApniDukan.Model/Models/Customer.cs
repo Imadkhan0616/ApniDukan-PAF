@@ -12,16 +12,17 @@ namespace ApniDukan.Models
         public string FirstName { get; set; }
         [Required, StringLength(50)]
         public string LastName { get; set; }
-        [Required, StringLength(500)]
+        
+        [StringLength(500)]
         public string Address { get; set; }
         
-        [Required, StringLength(100)]
+        [StringLength(100)]
         public string City { get; set; }
         
-        [Required, StringLength(100)]
+        [StringLength(100)]
         public string Country { get; set; }
         
-        [Required, StringLength(20)]
+        [StringLength(20)]
         public string ContactNo { get; set; }
         
         [Required, StringLength(200)]

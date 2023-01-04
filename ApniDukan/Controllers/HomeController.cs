@@ -1,6 +1,8 @@
 ﻿using ApniDukan.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ApniDukan.Common;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApniDukan.Controllers
 {
@@ -15,6 +17,46 @@ namespace ApniDukan.Controllers
 
         public IActionResult Index()
         {
+            if (TempData["Session"] != null)
+            {
+                SessionStorage.Session = TempData["Session"].ToString();
+                ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
+            }
+            else if (SessionStorage.Session != null)
+                ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
+            else
+                ViewData["Session"] = new SessionViewModel();
+
+            return View();
+        }
+
+        public IActionResult Shop()
+        {
+            if (TempData["Session"] != null)
+            {
+                SessionStorage.Session = TempData["Session"].ToString();
+                ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
+            }
+            else if (SessionStorage.Session != null)
+                ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
+            else
+                ViewData["Session"] = new SessionViewModel();
+
+            return View();
+        }
+
+        public IActionResult Cart()
+        {
+            if (TempData["Session"] != null)
+            {
+                SessionStorage.Session = TempData["Session"].ToString();
+                ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
+            }
+            else if (SessionStorage.Session != null)
+                ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
+            else
+                ViewData["Session"] = new SessionViewModel();
+
             return View();
         }
 

@@ -1,6 +1,7 @@
 ﻿using ApniDukan.DatabaseIntegration.Model;
 using ApniDukan.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json.Linq;
 
 namespace ApniDukan.DatabaseIntegration
@@ -29,6 +30,29 @@ namespace ApniDukan.DatabaseIntegration
             //    $"Database={databaseConfigModel.DatabaseName};" +
             //    $"User Id={databaseConfigModel.UserId};" +
             //    $"Password={databaseConfigModel.Password};");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity(typeof(User)).Property(nameof(Models.User.UserID)).UseHiLo("Seq_User","Admin");
+            modelBuilder.Entity(typeof(Order)).Property(nameof(Models.Order.OrderID)).UseHiLo("Seq_Order","Cart");
+            modelBuilder.Entity(typeof(OrderItem)).Property(nameof(Models.OrderItem.OrderItemID)).UseHiLo("Seq_OrderItem","Cart");
+            modelBuilder.Entity(typeof(Customer)).Property(nameof(Models.Customer.CustomerID)).UseHiLo("Seq_Customer","Cart");
+        }
+
+        public async Task CommitChangesAsync()
+        {
+            IDbContextTransaction transaction = Database.BeginTransaction();
+            try
+            {
+                await SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
     }
 }
