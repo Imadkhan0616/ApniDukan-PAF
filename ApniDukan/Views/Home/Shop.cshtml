@@ -1,12 +1,18 @@
-﻿<div class="row">
+﻿<link href="~/css/ourteamcard.css" rel="stylesheet" />
+<div class="row">
     @for (int i = 1; i <= 10; i++)
     {
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <img class="card-img-top" height="300" width="250" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHw%3D&w=1000&q=80" />
-                <strong><p>@($"Product {i}| Price: {10 * i}")</p></strong>
-                <button class="btn btn-primary" type="button"> Add to Cart</button>
-            </div>
+        <div class="col-md-3 col-sm-6" style="padding:10px;">
+            <div class="our-team">
+                <div class="pic">
+                    <img src="~/img/ca3798f8-93b2-4f83-9b8d-4d8e0a1b49e4.png">
+                </div>
+                <h3 class="title">Shoes Nike</h3>
+                <span class="post">Best Nike in the world</span>
+                <a href="#" class="btn btn-danger text-white">Add To Cart</a>
+             </div>
         </div>
     }
 </div>
+
+

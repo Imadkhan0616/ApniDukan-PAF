@@ -49,6 +49,10 @@ namespace ApniDukan.Controllers
 
             return View();
         }
+        public IActionResult OurTeam()
+        {
+            return View();
+        }
 
         public IActionResult Dashboard()
         {

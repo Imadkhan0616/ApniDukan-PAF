@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ApniDukan</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ApniDukan.styles.css" asp-append-version="true" />
+    <link href="~/css/apnidukaan.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
 </head>
 <body>
     @{
@@ -15,7 +21,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ApniDukan</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/apni dukaan.png" style="width:200px; height:200px;" alt="Apni_Dukaan-Logo"/></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,59 +32,66 @@
                         {
                             @if (User.IsInRole("Admin"))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Coupons" asp-action="Index">Coupons</a>
-                                </li>
+                            <div id="mySidenav" class="sidenav">
+                                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                                 <a style="font-size:14px;" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+                                 <a style="font-size:14px;" asp-controller="Categories" asp-action="Index">Categories</a>
+                                 <a style="font-size:14px;" asp-controller="Products" asp-action="Index">Products</a>
+                                 <a style="font-size:14px;" asp-controller="Orders" asp-action="Index">Orders</a>
+                                 <a style="font-size:14px;" asp-controller="Coupons" asp-action="Index">Coupons</a>
+                             </div>
+                             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
                             }
                             else if (User.IsInRole("Customer"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Shop">Shop</a>
+                                    <a class="nav-link text-dark"  asp-controller="Home" asp-action="Shop">Shop</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Cart">Cart</a>
+                                    <a class="nav-link text-dark"  asp-controller="Home" asp-action="Cart">Cart</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="OurTeam">OurTeam</a>
                                 </li>
                             }
-
-                            <li class="nav-item">
-                                <strong><a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Hello @session.UserName</a></strong>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                            </li>
+                            <li class="nav-item align-right">
+                                    <strong><a class="nav-link text-dark"  asp-controller="#" asp-action="">Hello @session.UserName</a></strong>
+                                </li>
+                            <li class="nav-item align-right">
+                                    <a class="btn btn-danger text-white" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                                </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <li class="nav-item align-right">
+                                <a class="nav-link text-dark"  asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="SignIn">Sign In</a>
+                            <li class="nav-item align-right">
+                                <a class="nav-link text-dark" asp-controller="Authentication" asp-action="SignIn">Sign In</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Register">Register</a>
+                            <li class="nav-item align-right">
+                                <a class="nav-link text-dark" asp-controller="Authentication" asp-action="Register">Register</a>
                             </li>
                         }
                     </ul>
                 </div>
+                
+                <script>
+                    function openNav() {
+                        document.getElementById("mySidenav").style.width = "250px";
+                    }
+
+                    function closeNav() {
+                        document.getElementById("mySidenav").style.width = "0";
+                    }
+                </script>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+
         </main>
     </div>
 
