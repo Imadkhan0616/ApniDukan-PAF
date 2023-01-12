@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApniDukan.DatabaseIntegration;
 using ApniDukan.Models;
+using Newtonsoft.Json;
+using ApniDukan.Common;
 
 namespace ApniDukan.Controllers
 {
@@ -13,6 +15,30 @@ namespace ApniDukan.Controllers
         public OrdersController(ApniDukanContext context)
         {
             _context = context;
+        }
+
+        [HttpPost]
+        public IActionResult AddToCart(Product product)
+        {
+            if (product == null)
+                return Json(new { message = "Product cannot be empty.", code = "0001" });
+
+            if (SessionStorage.CartProducts is not null or { Count: 0 })
+            {
+                Product cartProduct = SessionStorage.CartProducts.FirstOrDefault(p => p.ProductID == product.ProductID);
+
+                if (cartProduct != null)
+                    cartProduct.Quantity++;
+                else
+                    SessionStorage.CartProducts.Add(product);
+            }
+            else
+            {
+                SessionStorage.CartProducts = new();
+                SessionStorage.CartProducts.Add(product);
+            }
+
+            return Json(new { message = "Item added to cart.", code = "0000" });
         }
 
         // GET: Orders
@@ -151,14 +177,14 @@ namespace ApniDukan.Controllers
             {
                 _context.Order.Remove(order);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrderExists(long id)
         {
-          return _context.Order.Any(e => e.OrderID == id);
+            return _context.Order.Any(e => e.OrderID == id);
         }
     }
 }

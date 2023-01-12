@@ -1,10 +1,35 @@
-﻿<link href="~/css/ourteamcard.css" rel="stylesheet" />
+﻿@using ApniDukan.Common;
+<link href="~/css/ourteamcard.css" rel="stylesheet" />
 
 @model IEnumerable<ApniDukan.Models.Product>
 
 @{
     ViewData["Title"] = "Shop";
 }
+
+<script>
+    function addToCart(productID) {
+        //alert('add to cart..' + productID);
+        var productData = document.getElementById(productID).value;
+        //alert(productData);
+        var data = JSON.parse(productData);
+        //alert(data);
+        $.ajax({
+            type: 'POST',
+            url: "@(Url.Action("AddToCart", "Orders"))",
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
+            data: data,
+            success: function (result) {
+                alert(result.message);
+                console.log(result);
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+                console.log('Failed ');
+            }
+        })
+    }
+</script>
 
 <h1>Shop</h1>
 
@@ -21,10 +46,16 @@
                      height="300px"
                      alt="product_img" />
                 </div>
+                <input id="@item.ProductID" type="hidden" value="@item.ToJson()" />
                 <h3 class="title">@Html.DisplayFor(modelItem => item.Name)</h3>
                 <span class="post">@Html.DisplayFor(modelItem => item.Category.Name)</span>
-                <a href="#" class="btn btn-danger text-white">Add To Cart</a>
+                <button type="button" class="btn btn-danger text-white" onclick="addToCart(@item.ProductID)">Add To Cart</button>
             </div>
         </div>
     }
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

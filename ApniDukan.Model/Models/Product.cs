@@ -32,5 +32,8 @@ namespace ApniDukan.Models
         public IFormFile ImageFile { get; set; }
 
         public Category Category { get; set; }
+
+        [NotMapped]
+        public int Quantity { get; set; } = 1;
     }
 }

@@ -41,17 +41,7 @@ namespace ApniDukan.Controllers
 
         public IActionResult Cart()
         {
-            //if (TempData["Session"] != null)
-            //{
-            //    SessionStorage.Session = TempData["Session"].ToString();
-            //    ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
-            //}
-            //else if (SessionStorage.Session != null)
-            //    ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
-            //else
-            //    ViewData["Session"] = new SessionViewModel();
-
-            return View();
+            return View(SessionStorage.CartProducts);
         }
         public IActionResult OurTeam()
         {
@@ -61,6 +51,11 @@ namespace ApniDukan.Controllers
         public IActionResult Dashboard()
         {
             return View();
+        }
+
+        public IActionResult Payment()
+        {
+            return View(SessionStorage.CartProducts);
         }
 
         public IActionResult Privacy()

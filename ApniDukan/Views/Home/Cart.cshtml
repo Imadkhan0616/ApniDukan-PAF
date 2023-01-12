@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@model IEnumerable<ApniDukan.Models.Product>
+
+<div class="row">
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -9,30 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Product 1</td>
-                <td>20</td>
-                <td>2</td>
-                <td>40</td>
-            </tr>
-            <tr>
-                <td>Product 2</td>
-                <td>35</td>
-                <td>2</td>
-                <td>70</td>
-            </tr>
-            <tr>
-                <td>Product 3</td>
-                <td>30</td>
-                <td>3</td>
-                <td>90</td>
-            <tr>
-                <td>Product 4</td>
-                <td>50</td>
-                <td>2</td>
-                <td>100</td>
-            </tr>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                </tr>
+            }
         </tbody>
     </table>
     <a asp-action="Payment" asp-controller="Home" style="width:100px;" class="btn btn-primary" type="button"> Checkout</a>
