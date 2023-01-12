@@ -60,14 +60,17 @@ namespace ApniDukan.Controllers
             if (ModelState.IsValid)
             {
                 //Save image to wwwroot/image
-                string wwwRootPath = _hostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
-                string extension = Path.GetExtension(product.ImageFile.FileName);
-                product.FilePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                string path = Path.Combine(wwwRootPath + "/Upload/Product/Image/", fileName);
-                using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                if (product.ImageFile is not null)
                 {
-                    await product.ImageFile.CopyToAsync(fileStream);
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                    string extension = Path.GetExtension(product.ImageFile.FileName);
+                    product.FilePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                    string path = Path.Combine(wwwRootPath + "/Upload/Product/Image/", fileName);
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await product.ImageFile.CopyToAsync(fileStream);
+                    }
                 }
 
                 //Insert record
@@ -112,15 +115,18 @@ namespace ApniDukan.Controllers
             {
                 try
                 {
-                    //Save image to wwwroot/image
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
-                    string extension = Path.GetExtension(product.ImageFile.FileName);
-                    product.FilePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                    string path = Path.Combine(wwwRootPath + "/Upload/Product/Image/", fileName);
-                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    if (product.ImageFile is not null)
                     {
-                        await product.ImageFile.CopyToAsync(fileStream);
+                        //Save image to wwwroot/image
+                        string wwwRootPath = _hostEnvironment.WebRootPath;
+                        string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                        string extension = Path.GetExtension(product.ImageFile.FileName);
+                        product.FilePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        string path = Path.Combine(wwwRootPath + "/Upload/Product/Image/", fileName);
+                        using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await product.ImageFile.CopyToAsync(fileStream);
+                        }
                     }
 
                     // Update record
@@ -177,7 +183,7 @@ namespace ApniDukan.Controllers
             {
                 //delete image from wwwroot/image
                 string imagePath = Path.Combine(_hostEnvironment.WebRootPath, "upload/product/image", product.FilePath);
-                
+
                 if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
 
                 _context.Product.Remove(product);

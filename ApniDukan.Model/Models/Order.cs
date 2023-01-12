@@ -12,6 +12,8 @@ namespace ApniDukan.Models
 
         [Range(1, long.MaxValue, ErrorMessage = "The field Customer is required.")]
         public long CustomerID { get; set; }
+
+        [Display(Name = "Coupon")]
         public long CouponID { get; set; }
 
         [DateRequired(ErrorMessage = "The field Order Date is required.")]
