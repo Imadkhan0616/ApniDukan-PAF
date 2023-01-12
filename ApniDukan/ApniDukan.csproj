@@ -21,8 +21,4 @@
     <ProjectReference Include="..\ApniDukan.DatabaseIntegration\ApniDukan.DatabaseIntegration.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Upload\Product\Image\" />
-  </ItemGroup>
-
 </Project>
