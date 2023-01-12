@@ -12,17 +12,29 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApniDukan.DatabaseIntegration.Migrations
 {
     [DbContext(typeof(ApniDukanContext))]
-    [Migration("20230103183759_Create-Tables")]
-    partial class CreateTables
+    [Migration("20230112172330_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.HasSequence("Seq_Customer", "Cart")
+                .IncrementsBy(10);
+
+            modelBuilder.HasSequence("Seq_Order", "Cart")
+                .IncrementsBy(10);
+
+            modelBuilder.HasSequence("Seq_OrderItem", "Cart")
+                .IncrementsBy(10);
+
+            modelBuilder.HasSequence("Seq_User", "Admin")
+                .IncrementsBy(10);
 
             modelBuilder.Entity("ApniDukan.Models.Category", b =>
                 {
@@ -71,6 +83,9 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int>("DiscountPercent")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -90,25 +105,21 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CustomerID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("CustomerID"), "Seq_Customer", "Cart");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ContactNo")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -144,7 +155,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("OrderID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("OrderID"), "Seq_Order", "Cart");
 
                     b.Property<long>("CouponID")
                         .HasColumnType("bigint");
@@ -183,7 +194,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("OrderItemID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("OrderItemID"), "Seq_OrderItem", "Cart");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
@@ -258,7 +269,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("UserID"), "Seq_User", "Admin");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");

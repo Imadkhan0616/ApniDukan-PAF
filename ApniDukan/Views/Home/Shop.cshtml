@@ -1,5 +1,5 @@
 ﻿<link href="~/css/ourteamcard.css" rel="stylesheet" />
-<div class="row">
+@*<div class="row">
     @for (int i = 1; i <= 10; i++)
     {
         <div class="col-md-3 col-sm-6" style="padding:10px;">
@@ -12,7 +12,87 @@
                 <a href="#" class="btn btn-danger text-white">Add To Cart</a>
              </div>
         </div>
+
+        <div class="col-md-3 col-sm-6" style="padding:10px;">
+            <div class="our-team">
+                <div class="pic">
+                    
+                </div>
+                <h3 class="title">Shoes Nike</h3>
+                <span class="post">Best Nike in the world</span>
+                <a href="#" class="btn btn-danger text-white">Add To Cart</a>
+             </div>
+        </div>
     }
-</div>
+</div>*@
+
+
+@model IEnumerable<ApniDukan.Models.Product>
+
+@{
+    ViewData["Title"] = "Shop";
+}
+
+<h1>Shop</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FilePath)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FilePath)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Cart">Add To Cart</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 
