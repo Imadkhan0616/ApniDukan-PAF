@@ -15,56 +15,53 @@
 
 </head>
 <body>
-    @{
-        SessionViewModel session = (SessionViewModel)(ViewData["Session"] ?? new SessionViewModel());
-    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/apni dukaan.png" style="width:200px; height:200px;" alt="Apni_Dukaan-Logo"/></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/apni dukaan.png" style="width:200px; height:200px;" alt="Apni_Dukaan-Logo" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity is {IsAuthenticated: true })
+                        @if (User.Identity is { IsAuthenticated: true })
                         {
                             @if (User.IsInRole("Admin"))
                             {
-                            <div id="mySidenav" class="sidenav">
-                                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                                 <a style="font-size:14px;" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                                 <a style="font-size:14px;" asp-controller="Categories" asp-action="Index">Categories</a>
-                                 <a style="font-size:14px;" asp-controller="Products" asp-action="Index">Products</a>
-                                 <a style="font-size:14px;" asp-controller="Orders" asp-action="Index">Orders</a>
-                                 <a style="font-size:14px;" asp-controller="Coupons" asp-action="Index">Coupons</a>
-                             </div>
-                             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                                <div id="mySidenav" class="sidenav">
+                                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                                    <a style="font-size:14px;" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+                                    <a style="font-size:14px;" asp-controller="Categories" asp-action="Index">Categories</a>
+                                    <a style="font-size:14px;" asp-controller="Products" asp-action="Index">Products</a>
+                                    <a style="font-size:14px;" asp-controller="Orders" asp-action="Index">Orders</a>
+                                    <a style="font-size:14px;" asp-controller="Coupons" asp-action="Index">Coupons</a>
+                                </div>
+                                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
                             }
                             else if (User.IsInRole("Customer"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark"  asp-controller="Home" asp-action="Shop">Shop</a>
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Shop">Shop</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark"  asp-controller="Home" asp-action="Cart">Cart</a>
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Cart">Cart</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Home" asp-action="OurTeam">OurTeam</a>
                                 </li>
                             }
                             <li class="nav-item align-right">
-                                    <strong><a class="nav-link text-dark"  asp-controller="#" asp-action="">Hello @session.UserName</a></strong>
-                                </li>
+                                <strong><a class="nav-link text-dark" asp-controller="#" asp-action="">Hello @User.Identity.Name</a></strong>
+                            </li>
                             <li class="nav-item align-right">
-                                    <a class="btn btn-danger text-white" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                                </li>
+                                <a class="btn btn-danger text-white" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                            </li>
                         }
                         else
                         {
                             <li class="nav-item align-right">
-                                <a class="nav-link text-dark"  asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item align-right">
                                 <a class="nav-link text-dark" asp-controller="Authentication" asp-action="SignIn">Sign In</a>
@@ -75,7 +72,7 @@
                         }
                     </ul>
                 </div>
-                
+
                 <script>
                     function openNav() {
                         document.getElementById("mySidenav").style.width = "250px";

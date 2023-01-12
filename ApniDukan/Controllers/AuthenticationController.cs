@@ -53,7 +53,7 @@ namespace ApniDukan.Controllers
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, $"{user.FirstName} + {user.LastName}"),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Type)
             };
@@ -85,6 +85,8 @@ namespace ApniDukan.Controllers
         {
             if (!ModelState.IsValid) return View(user);
 
+            string rawPassword = "";
+
             try
             {
                 Customer customer = new Customer
@@ -94,6 +96,7 @@ namespace ApniDukan.Controllers
                     Email = user.Email
                 };
 
+                rawPassword = user.Password;
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
                 _apniDukanContext.User.Add(user);
@@ -107,7 +110,7 @@ namespace ApniDukan.Controllers
                 return View(user);
             }
 
-            return await SignIn(new SignInViewModel() { Email = user.Email, Password = user.Password });
+            return await SignIn(new SignInViewModel() { Email = user.Email, Password = rawPassword });
         }
 
         public async Task<IActionResult> Logout()

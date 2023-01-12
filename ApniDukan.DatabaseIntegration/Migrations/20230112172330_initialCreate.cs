@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ApniDukan.DatabaseIntegration.Migrations
 {
-    public partial class CreateTables : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,26 @@ namespace ApniDukan.DatabaseIntegration.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "Admin");
+
+            migrationBuilder.CreateSequence(
+                name: "Seq_Customer",
+                schema: "Cart",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "Seq_Order",
+                schema: "Cart",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "Seq_OrderItem",
+                schema: "Cart",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "Seq_User",
+                schema: "Admin",
+                incrementBy: 10);
 
             migrationBuilder.CreateTable(
                 name: "Category",
@@ -45,6 +65,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    DiscountPercent = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -58,14 +79,13 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                 schema: "Cart",
                 columns: table => new
                 {
-                    CustomerID = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerID = table.Column<long>(type: "bigint", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ContactNo = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ContactNo = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
@@ -80,8 +100,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                 schema: "Admin",
                 columns: table => new
                 {
-                    UserID = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<long>(type: "bigint", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -127,8 +146,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                 schema: "Cart",
                 columns: table => new
                 {
-                    OrderID = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<long>(type: "bigint", nullable: false),
                     CustomerID = table.Column<long>(type: "bigint", nullable: false),
                     CouponID = table.Column<long>(type: "bigint", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -155,8 +173,7 @@ namespace ApniDukan.DatabaseIntegration.Migrations
                 schema: "Cart",
                 columns: table => new
                 {
-                    OrderItemID = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderItemID = table.Column<long>(type: "bigint", nullable: false),
                     OrderID = table.Column<long>(type: "bigint", nullable: false),
                     ProductID = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
@@ -237,6 +254,22 @@ namespace ApniDukan.DatabaseIntegration.Migrations
             migrationBuilder.DropTable(
                 name: "Category",
                 schema: "Master");
+
+            migrationBuilder.DropSequence(
+                name: "Seq_Customer",
+                schema: "Cart");
+
+            migrationBuilder.DropSequence(
+                name: "Seq_Order",
+                schema: "Cart");
+
+            migrationBuilder.DropSequence(
+                name: "Seq_OrderItem",
+                schema: "Cart");
+
+            migrationBuilder.DropSequence(
+                name: "Seq_User",
+                schema: "Admin");
         }
     }
 }

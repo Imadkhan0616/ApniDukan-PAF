@@ -3,16 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ApniDukan.Common;
 using Microsoft.AspNetCore.Authorization;
+using ApniDukan.DatabaseIntegration;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApniDukan.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApniDukanContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApniDukanContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -20,7 +22,7 @@ namespace ApniDukan.Controllers
             return View();
         }
 
-        public IActionResult Shop()
+        public async Task<IActionResult> Shop()
         {
             //if (TempData["Session"] != null)
             //{
@@ -32,7 +34,9 @@ namespace ApniDukan.Controllers
             //else
             //    ViewData["Session"] = new SessionViewModel();
 
-            return View();
+            var _apniDukanContext = _context.Product.Include(p => p.Category);
+
+            return View(await _apniDukanContext.ToListAsync());
         }
 
         public IActionResult Cart()

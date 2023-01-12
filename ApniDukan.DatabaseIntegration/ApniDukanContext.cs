@@ -18,12 +18,12 @@ namespace ApniDukan.DatabaseIntegration
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string databaseConfigString = File.ReadAllText(@"E:\ApniDukaan\ApniDukan\ApniDukan.DatabaseIntegration\bin\Debug\net6.0\DatabaseConfig.json");
+            string databaseConfigString = File.ReadAllText(@"D:\ApniDukan-PAF\ApniDukan.DatabaseIntegration\bin\Debug\net6.0\DatabaseConfig.json");
             JObject databaseConfig = JObject.Parse(databaseConfigString);
 
             DatabaseConfigModel databaseConfigModel = databaseConfig.ToObject<DatabaseConfigModel>();
 
-            optionsBuilder.UseSqlServer("Server=DESKTOP-2LU51K8\\MYSQL;Database=ApniDukaan_CodeFirst;User Id=sa;Password=sa123;");
+            optionsBuilder.UseSqlServer("Server=PROFESSOR;Database=ApniDukaan_db-TESTING;User Id=sa;Password=sa123;");
 
             //optionsBuilder.UseSqlServer(
             //    $"Server={databaseConfigModel.ServerName};" +
