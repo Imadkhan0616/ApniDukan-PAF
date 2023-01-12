@@ -1,31 +1,4 @@
 ﻿<link href="~/css/ourteamcard.css" rel="stylesheet" />
-@*<div class="row">
-    @for (int i = 1; i <= 10; i++)
-    {
-        <div class="col-md-3 col-sm-6" style="padding:10px;">
-            <div class="our-team">
-                <div class="pic">
-                    <img src="~/img/ca3798f8-93b2-4f83-9b8d-4d8e0a1b49e4.png">
-                </div>
-                <h3 class="title">Shoes Nike</h3>
-                <span class="post">Best Nike in the world</span>
-                <a href="#" class="btn btn-danger text-white">Add To Cart</a>
-             </div>
-        </div>
-
-        <div class="col-md-3 col-sm-6" style="padding:10px;">
-            <div class="our-team">
-                <div class="pic">
-                    
-                </div>
-                <h3 class="title">Shoes Nike</h3>
-                <span class="post">Best Nike in the world</span>
-                <a href="#" class="btn btn-danger text-white">Add To Cart</a>
-             </div>
-        </div>
-    }
-</div>*@
-
 
 @model IEnumerable<ApniDukan.Models.Product>
 
@@ -34,6 +7,25 @@
 }
 
 <h1>Shop</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 col-sm-6" style="padding:10px;">
+            <div class="our-team">
+                <div class="pic">
+                    <img decoding="async" src="@("~/upload/product/image/"+item.FilePath)" asp-append-version="true" width="250px" height="300px"  alt="product_img"/>
+                </div>
+                <h3 class="title">@Html.DisplayFor(modelItem => item.Name)</h3>
+                <span class="post">@Html.DisplayFor(modelItem => item.Category.Name)</span>
+                <a href="#" class="btn btn-danger text-white">Add To Cart</a>
+             </div>
+        </div>
+    }
+</div>
+
+
+@*
 
 <table class="table">
     <thead>
@@ -63,8 +55,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
+       
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -95,4 +86,4 @@
     </tbody>
 </table>
 
-
+*@
