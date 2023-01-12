@@ -9,10 +9,12 @@ namespace ApniDukan.Controllers
     public class ProductsController : Controller
     {
         private readonly ApniDukanContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ProductsController(ApniDukanContext context)
+        public ProductsController(ApniDukanContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         // GET: Products
@@ -53,10 +55,22 @@ namespace ApniDukan.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,CategoryID,Name,Description,Price,FilePath,CreatedOn,IsActive")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductID,CategoryID,Name,Description,Price,FilePath,ImageFile,CreatedOn,IsActive")] Product product)
         {
             if (ModelState.IsValid)
             {
+                //Save image to wwwroot/image
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                string extension = Path.GetExtension(product.ImageFile.FileName);
+                product.FilePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Upload/Product/Image/", fileName);
+                using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await product.ImageFile.CopyToAsync(fileStream);
+                }
+
+                //Insert record
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +101,7 @@ namespace ApniDukan.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ProductID,CategoryID,Name,Description,Price,FilePath,CreatedOn,IsActive")] Product product)
+        public async Task<IActionResult> Edit(long id, [Bind("ProductID,CategoryID,Name,Description,Price,FilePath,ImageFile,CreatedOn,IsActive")] Product product)
         {
             if (id != product.ProductID)
             {
@@ -98,6 +112,18 @@ namespace ApniDukan.Controllers
             {
                 try
                 {
+                    //Save image to wwwroot/image
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                    string extension = Path.GetExtension(product.ImageFile.FileName);
+                    product.FilePath = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                    string path = Path.Combine(wwwRootPath + "/Upload/Product/Image/", fileName);
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await product.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    // Update record
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -144,21 +170,26 @@ namespace ApniDukan.Controllers
         {
             if (_context.Product == null)
             {
-                return Problem("Entity set 'ApniDukanContext.Product'  is null.");
+                return Problem("Entity set 'ApniDukanContext.Product' is null.");
             }
             var product = await _context.Product.FindAsync(id);
             if (product != null)
             {
+                //delete image from wwwroot/image
+                string imagePath = Path.Combine(_hostEnvironment.WebRootPath, "upload/product/image", product.FilePath);
+                
+                if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
+
                 _context.Product.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(long id)
         {
-          return _context.Product.Any(e => e.ProductID == id);
+            return _context.Product.Any(e => e.ProductID == id);
         }
     }
 }

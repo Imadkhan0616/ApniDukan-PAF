@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ApniDukan.Model.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApniDukan.Models
@@ -8,6 +9,9 @@ namespace ApniDukan.Models
     {
         [Key]
         public long UserID { get; set; }
+
+        [Display(Name = "Role")]
+        public long RoleID { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -24,8 +28,6 @@ namespace ApniDukan.Models
         [Required,StringLength(100)]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Type { get; set; }
+        public Role Role { get; set; }
     }
 }

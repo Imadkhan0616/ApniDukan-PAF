@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApniDukan.Models
@@ -9,6 +11,7 @@ namespace ApniDukan.Models
         [Key]
         public long ProductID { get; set; }
 
+        [Display(Name = "Category")]
         [Range(1, long.MaxValue, ErrorMessage = "The field Category is required.")]
         public long CategoryID { get; set; }
 
@@ -23,6 +26,10 @@ namespace ApniDukan.Models
 
         [StringLength(4000)]
         public string FilePath { get; set; }
+
+        [NotMapped]
+        [DisplayName("Upload File")]
+        public IFormFile ImageFile { get; set; }
 
         public Category Category { get; set; }
     }

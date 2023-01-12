@@ -1,4 +1,5 @@
 ﻿using ApniDukan.DatabaseIntegration.Model;
+using ApniDukan.Model.Models;
 using ApniDukan.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -11,6 +12,7 @@ namespace ApniDukan.DatabaseIntegration
         public DbSet<Product> Product { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Role> Role { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<Customer> Customer { get; set; }

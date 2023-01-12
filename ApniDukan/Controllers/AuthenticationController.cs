@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApniDukan.Controllers
 {
@@ -29,7 +31,7 @@ namespace ApniDukan.Controllers
         {
             if (!ModelState.IsValid) return View(signInModel);
 
-            User user = _apniDukanContext.User.FirstOrDefault(u => u.Email == signInModel.Email);
+            User user = _apniDukanContext.User.Include(r => r.Role).FirstOrDefault(u => u.Email == signInModel.Email);
 
             if (user == null)
             {
@@ -43,19 +45,11 @@ namespace ApniDukan.Controllers
                 return View(signInModel);
             }
 
-            //TempData["Session"] = new SessionViewModel
-            //{
-            //    IsAuthenticated = true,
-            //    Type = user.Type,
-            //    UserName = $"{user.FirstName} {user.LastName}"
-            //}
-            //.ToJson();
-
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Type)
+                new Claim(ClaimTypes.Role, user.Role.Name)
             };
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(
@@ -66,10 +60,10 @@ namespace ApniDukan.Controllers
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
-                new AuthenticationProperties { IsPersistent = true } // configure remember option here
+                new AuthenticationProperties { IsPersistent = true } // configure remember me option here
                 );
 
-            if (user.Type is "Customer")
+            if (user.Role.Name is "Customer")
                 return RedirectToAction(actionName: "Shop", controllerName: "Home");
 
             return RedirectToAction(actionName: "Index", controllerName: "Home");
@@ -77,6 +71,7 @@ namespace ApniDukan.Controllers
 
         public IActionResult Register()
         {
+            ViewData["RoleID"] = new SelectList(_apniDukanContext.Role, "RoleID", "Name");
             return View();
         }
 
@@ -85,8 +80,7 @@ namespace ApniDukan.Controllers
         {
             if (!ModelState.IsValid) return View(user);
 
-            string rawPassword = "";
-
+            string rawPassword;
             try
             {
                 Customer customer = new Customer
