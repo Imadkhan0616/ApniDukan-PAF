@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApniDukan.DatabaseIntegration;
@@ -21,24 +22,23 @@ namespace ApniDukan.Controllers
         public IActionResult AddToCart(Product product)
         {
             if (product == null)
-                return Json(new { message = "Product cannot be empty.", code = "0001" });
+                return Json(new { code = "0001", message = "Product cannot be empty.", productCount = 0 });
 
-            if (SessionStorage.CartProducts is not null or { Count: 0 })
+            if (SessionStorage.CartProducts is not null or { Count: 0 } && SessionStorage.CartProducts[User.GetEmailAddress()] is not null or { Count: 0 })
             {
-                Product cartProduct = SessionStorage.CartProducts.FirstOrDefault(p => p.ProductID == product.ProductID);
+                Product cartProduct = SessionStorage.CartProducts[User.GetEmailAddress()].FirstOrDefault(p => p.ProductID == product.ProductID);
 
                 if (cartProduct != null)
                     cartProduct.Quantity++;
                 else
-                    SessionStorage.CartProducts.Add(product);
+                    SessionStorage.CartProducts[User.GetEmailAddress()].Add(product);
             }
             else
             {
-                SessionStorage.CartProducts = new();
-                SessionStorage.CartProducts.Add(product);
+                SessionStorage.CartProducts![User.GetEmailAddress()] = new List<Product> { product };
             }
 
-            return Json(new { message = "Item added to cart.", code = "0000" });
+            return Json(new { code = "0000", message = "Item added to cart.", productCount = SessionStorage.CartProducts[User.GetEmailAddress()].Count });
         }
 
         // GET: Orders

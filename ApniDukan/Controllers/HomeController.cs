@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ApniDukan.Common;
-using Microsoft.AspNetCore.Authorization;
 using ApniDukan.DatabaseIntegration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace ApniDukan.Controllers
 {
@@ -24,24 +24,13 @@ namespace ApniDukan.Controllers
 
         public async Task<IActionResult> Shop()
         {
-            //if (TempData["Session"] != null)
-            //{
-            //    SessionStorage.Session = TempData["Session"].ToString();
-            //    ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
-            //}
-            //else if (SessionStorage.Session != null)
-            //    ViewData["Session"] = SessionStorage.Session.FromJsonToObject<SessionViewModel>();
-            //else
-            //    ViewData["Session"] = new SessionViewModel();
-
-            var _apniDukanContext = _context.Product.Include(p => p.Category);
-
-            return View(await _apniDukanContext.ToListAsync());
+            IIncludableQueryable<Product, Category> products = _context.Product.Include(p => p.Category);
+            return View(await products.ToListAsync());
         }
 
         public IActionResult Cart()
         {
-            return View(SessionStorage.CartProducts);
+            return View(SessionStorage.CartProducts[User.GetEmailAddress()] ?? new List<Product>());
         }
         public IActionResult OurTeam()
         {

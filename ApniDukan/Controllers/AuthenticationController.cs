@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using ApniDukan.Common;
 using ApniDukan.DatabaseIntegration;
 using ApniDukan.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -104,20 +103,13 @@ namespace ApniDukan.Controllers
                 return View(user);
             }
 
-            return await SignIn(new SignInViewModel() { Email = user.Email, Password = rawPassword });
+            return await SignIn(new SignInViewModel { Email = user.Email, Password = rawPassword });
         }
 
         public async Task<IActionResult> Logout()
         {
-            //TempData["Session"] = new SessionViewModel
-            //{
-            //    IsAuthenticated = false
-            //}
-            //.ToJson();
-
             // Clear the existing external cookie
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction(actionName: "Index", controllerName: "Home");
         }

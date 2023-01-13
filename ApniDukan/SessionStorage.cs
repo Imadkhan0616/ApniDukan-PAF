@@ -1,4 +1,5 @@
-﻿using ApniDukan.Models;
+﻿using System.Collections.Concurrent;
+using ApniDukan.Models;
 
 namespace ApniDukan
 {
@@ -6,6 +7,6 @@ namespace ApniDukan
     {
         public static string Session { get; set; }
 
-        public static List<Product> CartProducts { get; set; }
+        public static ConcurrentDictionary<string, List<Product>> CartProducts { get; } = new();
     }
 }
